@@ -225,7 +225,6 @@ components:
         cpu: 100m
         memory: 128Mi
     alpineImage: alpine:3.14
-    selfBuildBaseImage: ""
     ports:
       rpc:
         expose: true
@@ -648,10 +647,17 @@ rabbitmq:
     {{- end }}
 
 cert-manager:
-  enabled: false
+  # assume cert-manager is already installed in the cluster
+  install: false
+  # gitpod Certificate
+  certificate:
+    # by default use the gitpod CA issuer
+    issuerName: null
+    # allow additional names to *.ws<shortname>.<hostname> and *.<hostname>
+    additionalDNSNames: []
   installCRDs: true
+  # custom CA for certificates used by gitpod
+  # this certificates are internal to the namespace where gitpod is running
   ca:
     issuerName: ca-issuer
-    certificate:
-      selfSigned: true
-      secretName: gitpod-ca-certificate
+    secretName: gitpod-ca-certificate

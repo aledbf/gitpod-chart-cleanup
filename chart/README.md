@@ -7,7 +7,7 @@ This [Helm](https://helm.sh) chart allows you to deploy and operate an instance 
 
 ## Prerequisites
 
-- Kubernetes 1.13+
+- Kubernetes 1.19+
 - Helm 3+
 
 
@@ -18,8 +18,6 @@ git clone https://github.com/gitpod-io/gitpod
 cd gitpod/chart
 
 helm repo add charts.gitpod.io https://charts.gitpod.io
-helm repo add stable https://charts.helm.sh/stable
-helm repo add stable https://helm.min.io/
 helm repo update
 helm dep up
 ```
@@ -42,9 +40,10 @@ _See [helm install](https://helm.sh/docs/helm/helm_install/) for command documen
 
 By default this chart installs additional, dependent charts:
 
-- [stable/docker-registry](https://github.com/helm/charts/tree/master/stable/docker-registry)
-- [stable/minio](https://github.com/minio/charts)
-- [stable/mysql](https://github.com/helm/charts/tree/master/stable/mysql)
+- [twuni/docker-registry](https://artifacthub.io/packages/helm/twuni/docker-registry)
+- [minio/minio](https://artifacthub.io/packages/helm/minio/minio)
+- [bitnami/mysql](https://artifacthub.io/packages/helm/bitnami/mysql)
+- [bitnami/rabbitmq](https://artifacthub.io/packages/helm/bitnami/rabbitmq)
 
 _See [configuration](#configuration) for options to replace those dependencies._
 

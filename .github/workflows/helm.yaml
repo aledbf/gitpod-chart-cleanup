@@ -56,6 +56,13 @@ jobs:
         with:
           version: v3.6.2
 
+      - name: Setup
+        shell: bash
+        run: |
+          helm repo add twun    https://helm.twun.io
+          helm repo add minio   https://helm.min.io/
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo update
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.2.1
         env:

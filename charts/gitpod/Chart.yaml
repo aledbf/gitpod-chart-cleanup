@@ -2,10 +2,10 @@
 # Licensed under the MIT License. See License-MIT.txt in the project root for license information.
 
 apiVersion: v2
-appVersion: "0.10.0"
+appVersion: 0.10.0
 description: The core chart for Gitpod
 name: gitpod
-version: 1.0.3
+version: 1.0.4
 kubeVersion: ">=1.19.0-0"
 
 dependencies:

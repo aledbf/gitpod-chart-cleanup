@@ -22,7 +22,7 @@ installNetworkPolicies: true
 installPodSecurityPolicies: true
 imagePullPolicy: IfNotPresent
 
-# configure default log level
+# configure default log level of gitpod.io components
 log:
   level: trace
 

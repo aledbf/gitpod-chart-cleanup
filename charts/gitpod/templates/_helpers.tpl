@@ -375,3 +375,39 @@ storage:
     runAsUser: 65532
   terminationMessagePolicy: FallbackToLogsOnError
 {{- end -}}
+
+{{/* Container definition to update ca-certificates and add gitpod self-signed CA certificate */}}
+{{- define "gitpod.ca-certificates.container" -}}
+- name: update-ca-certificates
+  image: alpine:3.14
+  command:
+  - sh
+  - -c
+  - |
+    set -e
+    apk add --update ca-certificates
+    cp /etc/ssl/gitpod-ca.crt /usr/local/share/ca-certificates
+    update-ca-certificates
+    cp /etc/ssl/certs/* /ssl-certs
+  volumeMounts:
+    - name: cacerts
+      mountPath: "/ssl-certs"
+    - name: registry-certs
+      subPath: ca.crt
+      mountPath: /etc/ssl/gitpod-ca.crt
+{{- end -}}
+
+{{/* Volume mount for updated ca-certificates */}}
+{{- define "gitpod.ca-certificates.volumeMount" }}
+- name: cacerts
+  mountPath: /etc/ssl/certs
+{{- end -}}
+
+{{/* emptyDir volume ca-certificates */}}
+{{- define "gitpod.ca-certificates.volume" }}
+- name: cacerts
+  emptyDir: {}
+- name: registry-certs
+  secret:
+    secretName: builtin-registry-certs
+{{- end -}}

@@ -12,8 +12,7 @@ jobs:
     if: |
       (github.repository == 'aledbf/gitpod-chart-cleanup')
     outputs:
-      docs: ${{ steps.filter.outputs.docs }}
-      charts: ${{ steps.filter.outputs.charts }}
+      charts: ${{ steps.filter.outputs.chart }}
 
     steps:
 
@@ -25,7 +24,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           filters: |
-            charts:
+            chart:
               - 'chart/Chart.yaml'
               - 'chart/**/*'
 
@@ -36,7 +35,7 @@ jobs:
       - changes
     if: |
       (github.repository == 'aledbf/gitpod-chart-cleanup') &&
-      (needs.changes.outputs.charts == 'true')
+      (needs.changes.outputs.chart == 'true')
 
     steps:
 
@@ -53,7 +52,7 @@ jobs:
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.1.0
+        uses: helm/chart-releaser-action@v1.2.1
         env:
           CR_TOKEN: "${{ secrets.PERSONAL_TOKEN }}"
           CR_RELEASE_NAME_TEMPLATE: "helm-chart-{{ .Version }}"

@@ -505,7 +505,6 @@ mysql:
   serviceAccount:
     create: false
     name: db
-  initdbScriptsConfigMap: db-init-scripts
   volumePermissions:
     enabled: true
 

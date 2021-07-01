@@ -56,7 +56,7 @@ jobs:
         with:
           version: v3.6.2
 
-      - name: Setup
+      - name: Update helm repositories
         shell: bash
         run: |
           helm repo add twun    https://helm.twun.io

@@ -12,7 +12,7 @@ jobs:
     if: |
       (github.repository == 'aledbf/gitpod-chart-cleanup')
     outputs:
-      charts: ${{ steps.filter.outputs.chart }}
+      chart: ${{ steps.filter.outputs.chart }}
 
     steps:
 

@@ -33,7 +33,7 @@ data:
             "baseImageRepository": "{{ or $comp.registry.baseImageName (print (include "registry-name" $this) "/base-images") }}",
             "workspaceImageRepository": "{{ or $comp.registry.workspaceImageName (print (include "registry-name" $this) "/workspace-images") }}",
             "imageBuildSalt": "{{ $comp.imageBuildSalt | default "" }}",
-            "alpineImage": "{{ $comp.alpineImage | default "" }}",
+            "alpineImage": "{{ $comp.alpineImage | default "" }}"
         },
         "refCache": {
             "interval": "6h",

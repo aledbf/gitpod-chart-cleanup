@@ -48,7 +48,6 @@ spec:
     kind: pod
     stage: {{ $gp.installation.stage }}
   type: {{ $comp.serviceType | default "ClusterIP" }}
-  sessionAffinity: {{ $comp.serviceSessionAffinity | default "None" }}
   {{ if $comp.serviceExternalTrafficPolicy -}}
   externalTrafficPolicy: {{ $comp.serviceExternalTrafficPolicy }}
   {{- end }}

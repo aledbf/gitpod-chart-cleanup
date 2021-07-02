@@ -303,7 +303,6 @@ components:
       debug:
         expose: false
         containerPort: 9229
-    serviceSessionAffinity: None
     serverContainer:
       volumeMounts: null
       env: null
@@ -361,7 +360,6 @@ components:
         containerPort: 443
     loadBalancerIP: null
     serviceType: "LoadBalancer"
-    serviceSessionAffinity: "None"
     serviceExternalTrafficPolicy: null
 
   wsManager:

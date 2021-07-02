@@ -89,42 +89,13 @@ affinity:
 {{- define "gitpod.workspaceAffinity" -}}
 {{- $ := .root -}}
 {{- $gp := .gp -}}
-{{- $expr := dict -}}
-{{- if $gp.components.workspace.affinity -}}
-{{- if $gp.components.workspace.affinity.default -}}{{- $_ := set $expr $gp.components.workspace.affinity.default "" -}}{{- end -}}
-{{- if $gp.components.workspace.affinity.prebuild -}}{{- $_ := set $expr $gp.components.workspace.affinity.prebuild "" -}}{{- end -}}
-{{- if $gp.components.workspace.affinity.probe -}}{{- $_ := set $expr $gp.components.workspace.affinity.probe "" -}}{{- end -}}
-{{- if $gp.components.workspace.affinity.regular -}}{{- $_ := set $expr $gp.components.workspace.affinity.regular "" -}}{{- end -}}
-{{- end -}}
-{{- /*
-  In a previous iteration of the templates the node affinity was part of the workspace pod template.
-  In that case we need to extract the affinity from the template and add it to the workspace affinity set.
-*/ -}}
-{{- if $gp.components.workspace.template -}}
-{{- if $gp.components.workspace.template.spec -}}
-{{- if $gp.components.workspace.template.spec.affinity -}}
-{{- if $gp.components.workspace.template.spec.affinity.nodeAffinity -}}
-{{- if $gp.components.workspace.template.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution -}}
-{{- range $_, $t := $gp.components.workspace.template.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms -}}
-{{- range $_, $m := $t.matchExpressions -}}
-    {{- $_ := set $expr $m.key "" -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-{{- if not (eq (len $expr) 0) -}}
+{{- $comp := .comp -}}
+{{- if $comp.affinity -}}
 affinity:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-      {{- range $key, $val := $expr }}
-      - matchExpressions:
-        - key: {{ $key }}
-          operator: Exists
-      {{- end }}
+{{ $comp.affinity | toYaml | indent 2 }}
+{{- else if $gp.affinity -}}
+affinity:
+{{ $gp.affinity | toYaml | indent 2 }}
 {{- end -}}
 {{- end -}}
 

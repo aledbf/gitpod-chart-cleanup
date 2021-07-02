@@ -38,7 +38,7 @@ spec:
       enableServiceLinks: false
       containers:
       - name: database-sessions
-        image: "{{ template "gitpod.comp.imageFull" (dict "root" . "gp" .Values "comp" $.Values.components.dbMigrations) }}"
+        image: mysql:5.7.34
         env:
         - name: "MYSQL_PWD"
           value: "{{ $.Values.db.password }}"

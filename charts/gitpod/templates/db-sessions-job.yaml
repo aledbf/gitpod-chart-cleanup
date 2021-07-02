@@ -33,11 +33,8 @@ spec:
     spec:
 {{ include "gitpod.pod.affinity" $this | indent 6 }}
       restartPolicy: Never
-      serviceAccountName: database-sessions
+      serviceAccountName: db
       imagePullSecrets:
-{{- range $key, $value := .Values.defaults.imagePullSecrets }}
-      - name: {{ $value.name }}
-{{- end }}
       enableServiceLinks: false
       containers:
       - name: database-sessions

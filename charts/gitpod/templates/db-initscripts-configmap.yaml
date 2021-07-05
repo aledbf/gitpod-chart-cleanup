@@ -16,6 +16,6 @@ metadata:
 data:
   init.sql: |-
 {{- $root := . }}
-{{- range $path, $bytes := .Files.Glob "init/02-create-and-init-sessions-db.sql" }}
+{{- range $path, $bytes := .Files.Glob "config/db/init/02-create-and-init-sessions-db.sql" }}
 {{ $root.Files.Get $path | indent 4 }}
 {{- end }}

@@ -19,7 +19,14 @@ spec:
 {{- if $affinity -}}
 spec:
   affinity:
-{{ $affinity | toYaml | indent 2 }}
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: purpose
+            operator: In
+            values:
+            - workspaces
 {{- end -}}
 {{- end -}}
 {{- end }}

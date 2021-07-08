@@ -1,0 +1,51 @@
+# Copyright (c) 2021 Gitpod GmbH. All rights reserved.
+# Licensed under the MIT License. See License-MIT.txt in the project root for license information.
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: update-ca-certificates
+data:
+  setup.sh: |
+    echo "$GITPOD_CA_CERT" > /usr/local/share/ca-certificates/ca.crt && update-ca-certificates
+
+---
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-ca-certificates
+  labels:
+    app: update-ca-certificates
+spec:
+  selector:
+    matchLabels:
+      app: update-ca-certificates
+  template:
+    metadata:
+      labels:
+        app: update-ca-certificates
+    spec:
+      hostPID: true
+      hostNetwork: true
+      initContainers:
+      - name: init-node
+        command: ["nsenter"]
+        args: ["--mount=/proc/1/ns/mnt", "--", "sh", "-c", "$(SETUP_SCRIPT)"]
+        image: ubuntu:20.04
+        env:
+        - name: GITPOD_CA_CERT
+          valueFrom:
+            secretKeyRef:
+              name: registry-certs
+              key: ca.crt
+        - name: SETUP_SCRIPT
+          valueFrom:
+            configMapKeyRef:
+              name: update-node-ca-certificates
+              key: setup.sh
+        securityContext:
+          privileged: true
+      containers:
+      - name: wait
+        image: k8s.gcr.io/pause:3.5

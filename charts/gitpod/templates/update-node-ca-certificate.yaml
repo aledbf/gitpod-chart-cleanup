@@ -7,8 +7,16 @@ metadata:
   name: update-ca-certificates
 data:
   setup.sh: |
-    echo "$GITPOD_CA_CERT" > /usr/local/share/ca-certificates/gitpod-self-signed-ca.crt && update-ca-certificates
+    #/bin/bash
 
+    set -euo pipefail
+
+    echo "$GITPOD_CA_CERT" > /usr/local/share/ca-certificates/gitpod-self-signed-ca.crt
+
+    mkdir -p /etc/containerd/certs.d/
+    echo "$GITPOD_CA_CERT" > /etc/containerd/certs.d/reg.{{ .Values.hostname }}/gitpod-ca.crt
+
+    update-ca-certificates
 ---
 
 apiVersion: apps/v1
@@ -42,7 +50,7 @@ spec:
         - name: SETUP_SCRIPT
           valueFrom:
             configMapKeyRef:
-              name: update-node-ca-certificates
+              name: update-ca-certificates
               key: setup.sh
         securityContext:
           privileged: true

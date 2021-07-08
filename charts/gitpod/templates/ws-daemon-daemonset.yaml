@@ -74,6 +74,10 @@ spec:
         hostPath:
           path: {{ $comp.cgroupsRoot | default "/sys/fs/cgroup" }}
           type: Directory
+      - name: node-hosts
+        hostPath:
+          path: {{ $comp.nodeHosts | default "/etc/hosts" }}
+          type: File
       {{- if $comp.userNamespaces.shiftfsModuleLoader.enabled }}
       - name: node-linux-src
         hostPath:
@@ -149,6 +153,8 @@ spec:
         - mountPath: /mnt/node-cgroups
           name: node-cgroups
           mountPropagation: HostToContainer
+        - mountPath: /mnt/hosts
+          name: node-hosts
         - mountPath: /certs
           name: tls-certs
 {{- if $comp.volumeMounts }}

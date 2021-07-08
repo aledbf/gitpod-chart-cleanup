@@ -53,6 +53,13 @@ daemon:
       default: 10
     controlPeriod: {{ .Values.workspaceSizing.dynamic.cpu.controlPeriod | quote }}
     samplingPeriod: {{ .Values.workspaceSizing.dynamic.cpu.samplingPeriod | quote }}
+  hosts:
+    enabled: true
+    nodeHostsFile: "/mnt/hosts"
+    fixedHosts:
+      registryFacade:
+        - name: {{ (printf "reg.%s" (.Values.components.registryFacade.hostname | default .Values.hostname)) | quote }}
+          addr: 127.0.0.1
   disk:
     path: "/mnt/wsdaemon-workingarea"
     minBytesAvail: 21474836480

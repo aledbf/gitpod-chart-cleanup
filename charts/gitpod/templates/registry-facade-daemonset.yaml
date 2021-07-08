@@ -37,6 +37,25 @@ spec:
       enableServiceLinks: false
       initContainers:
 {{ include "gitpod.ca-certificates.container" $this | indent 8 }}
+      # Add gitpod self-signed CA certificate to containerd
+      # in order to pull images from the host without x509 errors
+      - name: update-containerd-certificates
+        command: ["nsenter"]
+        args: ["--mount=/proc/1/ns/mnt", "--", "sh", "-c", "$(SETUP_SCRIPT)"]
+        image: alpine:3.14
+        env:
+        - name: GITPOD_CA_CERT
+          valueFrom:
+            secretKeyRef:
+              name: builtin-registry-certs
+              key: ca.crt
+        - name: SETUP_SCRIPT
+          valueFrom:
+            configMapKeyRef:
+              name: update-ca-certificates
+              key: setup.sh
+        securityContext:
+          privileged: true
       containers:
       - name: registry-facade
         image: {{ template "gitpod.comp.imageFull" $this }}
@@ -95,4 +114,16 @@ spec:
       {{- end }}
 {{- include "gitpod.ca-certificates.volume" $this | indent 6 }}
 {{ toYaml .Values.defaults | indent 6 }}
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: update-containerd-certificates
+data:
+  setup.sh: |
+    mkdir -p /etc/containerd/certs.d/reg.{{ .Values.hostname }} && echo "$GITPOD_CA_CERT" > /etc/containerd/certs.d/{{- (printf "reg.%s:%v" (.Values.components.registryFacade.hostname | default .Values.hostname) .Values.components.registryFacade.ports.registry.servicePort) -}}/ca.crt
+
 {{ end }}
+

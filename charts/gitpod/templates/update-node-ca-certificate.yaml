@@ -7,7 +7,7 @@ metadata:
   name: update-ca-certificates
 data:
   setup.sh: |
-    echo "$GITPOD_CA_CERT" > /usr/local/share/ca-certificates/ca.crt && update-ca-certificates
+    echo "$GITPOD_CA_CERT" > /usr/local/share/ca-certificates/gitpod-self-signed-ca.crt && update-ca-certificates
 
 ---
 
@@ -29,7 +29,7 @@ spec:
       hostPID: true
       hostNetwork: true
       initContainers:
-      - name: init-node
+      - name: update-ca-certificates
         command: ["nsenter"]
         args: ["--mount=/proc/1/ns/mnt", "--", "sh", "-c", "$(SETUP_SCRIPT)"]
         image: ubuntu:20.04
@@ -37,7 +37,7 @@ spec:
         - name: GITPOD_CA_CERT
           valueFrom:
             secretKeyRef:
-              name: registry-certs
+              name: builtin-registry-certs
               key: ca.crt
         - name: SETUP_SCRIPT
           valueFrom:

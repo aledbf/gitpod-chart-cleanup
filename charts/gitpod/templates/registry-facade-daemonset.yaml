@@ -53,7 +53,7 @@ spec:
           - name: SETUP_SCRIPT
             valueFrom:
               configMapKeyRef:
-                name: update-ca-certificates
+                name: update-containerd-certificates
                 key: setup.sh
           securityContext:
             privileged: true

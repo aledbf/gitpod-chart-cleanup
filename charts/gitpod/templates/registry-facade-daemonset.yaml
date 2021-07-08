@@ -117,13 +117,14 @@ spec:
 
 ---
 
+# Install gitpod ca.crt in containerd to allow pulls from the host
+# https://github.com/containerd/containerd/blob/main/docs/hosts.md
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: update-containerd-certificates
 data:
   setup.sh: |
-    mkdir -p /etc/containerd/certs.d/reg.{{ .Values.hostname }} && echo "$GITPOD_CA_CERT" > /etc/containerd/certs.d/{{- (printf "reg.%s:%v" (.Values.components.registryFacade.hostname | default .Values.hostname) .Values.components.registryFacade.ports.registry.servicePort) -}}/ca.crt
+    mkdir -p {{- (printf "reg.%s:%v" (.Values.components.registryFacade.hostname | default .Values.hostname) .Values.components.registryFacade.ports.registry.servicePort) -}} && echo "$GITPOD_CA_CERT" > /etc/containerd/certs.d/{{- (printf "reg.%s:%v" (.Values.components.registryFacade.hostname | default .Values.hostname) .Values.components.registryFacade.ports.registry.servicePort) -}}/ca.crt
 
 {{ end }}
-

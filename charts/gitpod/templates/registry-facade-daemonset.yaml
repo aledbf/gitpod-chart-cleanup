@@ -48,7 +48,7 @@ spec:
           - name: GITPOD_CA_CERT
             valueFrom:
               secretKeyRef:
-                name: builtin-registry-certs
+                name: gitpod-ca-certificate
                 key: ca.crt
           - name: SETUP_SCRIPT
             valueFrom:

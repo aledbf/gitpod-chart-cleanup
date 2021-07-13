@@ -75,7 +75,7 @@ spec:
       {{- if .Values.components.workspace.pullSecret.secretName }}
       - name: pull-secret
         secret:
-          secretName: {{ .Values.components.workspace.pullSecret.secretName }}
+          secretName: {{ .Values.components.workspace.pullSecret.secretName | quote }}
       {{- end }}
 {{ toYaml .Values.defaults | indent 6 }}
 {{ end }}

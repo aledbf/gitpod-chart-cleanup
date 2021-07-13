@@ -364,7 +364,7 @@ storage:
   volumeMounts:
     - name: cacerts
       mountPath: "/ssl-certs"
-    - name: registry-certs
+    - name: gitpod-ca-certificate
       subPath: ca.crt
       mountPath: /etc/ssl/gitpod-ca.crt
 {{- end -}}
@@ -379,7 +379,7 @@ storage:
 {{- define "gitpod.ca-certificates.volume" }}
 - name: cacerts
   emptyDir: {}
-- name: registry-certs
+- name: gitpod-ca-certificate
   secret:
-    secretName: builtin-registry-certs
+    secretName: gitpod-ca-certificate
 {{- end -}}

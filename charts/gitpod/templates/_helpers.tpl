@@ -350,15 +350,15 @@ storage:
 {{/* Container definition to update ca-certificates and add gitpod self-signed CA certificate */}}
 {{- define "gitpod.ca-certificates.container" -}}
 - name: update-ca-certificates
-  image: alpine:3.14
+  # alpine throws a warning
+  image: ubuntu:20.04
   command:
   - sh
   - -c
   - |
     set -e
-    apk add --update ca-certificates
-    cp /etc/ssl/gitpod-ca.crt /usr/local/share/ca-certificates
-    update-ca-certificates
+    apt update && apt install -y ca-certificates
+    update-ca-certificates -f
     cp /etc/ssl/certs/* /ssl-certs
     echo "OK"
   volumeMounts:
@@ -366,7 +366,7 @@ storage:
       mountPath: "/ssl-certs"
     - name: gitpod-ca-certificate
       subPath: ca.crt
-      mountPath: /etc/ssl/gitpod-ca.crt
+      mountPath: /usr/local/share/ca-certificates/gitpod-ca.crt
 {{- end -}}
 
 {{/* Volume mount for updated ca-certificates */}}

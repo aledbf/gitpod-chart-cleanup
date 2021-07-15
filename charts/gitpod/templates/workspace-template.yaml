@@ -23,10 +23,8 @@ spec:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
         - matchExpressions:
-          - key: purpose
-            operator: In
-            values:
-            - workspaces
+          - key: {{ $affinity }}
+            operator: Exists
 {{- end -}}
 {{- end -}}
 {{- end }}

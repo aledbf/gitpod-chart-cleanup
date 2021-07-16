@@ -1,6 +1,5 @@
 # Copyright (c) 2020 Gitpod GmbH. All rights reserved.
 # Licensed under the MIT License. See License-MIT.txt in the project root for license information.
-
 {{ $comp := .Values.components.blobserve -}}
 {{- if not $comp.disabled -}}
 apiVersion: v1
@@ -31,12 +30,22 @@ data:
                     "workdir": "/ide",
                     "replacements": [
                         { "search": "vscode-webview.net", "replacement": "{{ .Values.hostname }}", "path": "/ide/out/vs/workbench/workbench.web.api.js" },
-                        { "search": "vscode-webview.net", "replacement": "{{ .Values.hostname }}", "path": "/ide/out/vs/workbench/services/extensions/worker/extensionHostWorker.js" }
+                        { "search": "vscode-webview.net", "replacement": "{{ .Values.hostname }}", "path": "/ide/out/vs/workbench/services/extensions/worker/extensionHostWorker.js" },
+                    ],
+                    "inlineStatic": [
+                        { "search": "${window.location.origin}", "replacement": "." },
+                        { "search": "value.startsWith(window.location.origin)", "replacement": "value.startsWith(window.location.origin) || value.startsWith('${ide}')" },
+                        { "search": "./out", "replacement": "${ide}/out" },
+                        { "search": "./node_modules", "replacement": "${ide}/node_modules" },
+                        { "search": "/_supervisor/frontend", "replacement": "${supervisor}" }
                     ]
                 },
                 "{{ template "gitpod.comp.imageRepo" (dict "root" . "gp" $.Values "comp" .Values.components.workspace.supervisor) }}": {
                     "prePull": ["{{- template "gitpod.comp.version" (dict "root" . "gp" $.Values "comp" .Values.components.workspace.supervisor) -}}"],
-                    "workdir": "/.supervisor/frontend"
+                    "workdir": "/.supervisor/frontend",
+                    "replacements": [
+                        { "search": "hostnameReplacedByBlobserve", "replacement": "{{ .Values.hostname }}", "path": "/.supervisor/frontend/main.js" }
+                    ]
                 }
             },
             "blobSpace": {

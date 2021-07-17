@@ -178,6 +178,7 @@ components:
 
   db:
     name: "db"
+    enabled: true
     autoMigrate: true
     gcloudSqlProxy:
       enabled: false

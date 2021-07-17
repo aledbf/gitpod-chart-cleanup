@@ -1,5 +1,6 @@
 # Copyright (c) 2020 Gitpod GmbH. All rights reserved.
 # Licensed under the MIT License. See License-MIT.txt in the project root for license information.
+
 {{ $comp := .Values.components.blobserve -}}
 {{- if not $comp.disabled -}}
 apiVersion: v1
@@ -42,10 +43,7 @@ data:
                 },
                 "{{ template "gitpod.comp.imageRepo" (dict "root" . "gp" $.Values "comp" .Values.components.workspace.supervisor) }}": {
                     "prePull": ["{{- template "gitpod.comp.version" (dict "root" . "gp" $.Values "comp" .Values.components.workspace.supervisor) -}}"],
-                    "workdir": "/.supervisor/frontend",
-                    "replacements": [
-                        { "search": "hostnameReplacedByBlobserve", "replacement": "{{ .Values.hostname }}", "path": "/.supervisor/frontend/main.js" }
-                    ]
+                    "workdir": "/.supervisor/frontend"
                 }
             },
             "blobSpace": {

@@ -1,23 +1,24 @@
 # Copyright (c) 2020 Gitpod GmbH. All rights reserved.
 # Licensed under the MIT License. See License-MIT.txt in the project root for license information.
 
-{{ $comp := .Values.components.imageBuilder -}}
-{{- $this := dict "root" . "gp" $.Values "comp" $comp -}}
+{{ $comp := .Values.components.imageBuilderMk3 -}}
+{{ $compImgbldr := .Values.components.imageBuilder -}}
+{{- $this := dict "root" . "gp" $.Values "comp" $comp "compImgbldr" $compImgbldr -}}
 {{- if not $comp.disabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: image-builder
+  name: image-builder-mk3
   labels:
     app: {{ template "gitpod.fullname" . }}
-    component: image-builder
+    component: image-builder-mk3
     kind: deployment
     stage: {{ .Values.installation.stage }}
 spec:
   selector:
     matchLabels:
       app: {{ template "gitpod.fullname" . }}
-      component: image-builder
+      component: image-builder-mk3
       kind: pod
       stage: {{ .Values.installation.stage }}
   replicas: {{ $comp.replicas | default 1 }}
@@ -28,10 +29,10 @@ spec:
       maxUnavailable: 0
   template:
     metadata:
-      name: image-builder
+      name: image-builder-mk3
       labels:
         app: {{ template "gitpod.fullname" . }}
-        component: image-builder
+        component: image-builder-mk3
         kind: pod
         stage: {{ .Values.installation.stage }}
       annotations:
@@ -41,63 +42,33 @@ spec:
 {{ include "gitpod.pod.dependsOn" $this | indent 8 }}
     spec:
 {{ include "gitpod.workspaceAffinity" $this | indent 6 }}
-      serviceAccountName: image-builder
+      serviceAccountName: image-builder-mk3
       volumes:
       - name: configuration
         configMap:
           name: {{ template "gitpod.comp.configMap" $this }}
-      - name: dind-storage
-        {{- if $comp.hostDindData }}
-        hostPath:
-          path: {{ $comp.hostDindData }}
-          type: DirectoryOrCreate
-        {{- else }}
-        emptyDir: {}
-        {{- end }}
-      {{- if $comp.registry.secretName }}
+      - name: authkey
+        secret:
+          secretName: image-builder-mk3-authkey
+      {{- if (default $compImgbldr.registry).secretName }}
       - name: pull-secret
         secret:
-          secretName: {{ $comp.registry.secretName }}
+          secretName: {{ (default $compImgbldr.registry).secretName }}
       {{- end }}
-{{- range $idx, $sec := $comp.registryCerts }}
+{{- range $idx, $sec := (default $comp.registryCerts $compImgbldr.registryCerts) }}
       - name: docker-tls-certs-{{ $idx }}
         secret:
           secretName: {{ $sec.secret }}
 {{- end }}
+      - name: wsman-tls-certs
+        secret:
+          secretName: {{ .Values.components.wsManager.tls.server.secretName }}
       enableServiceLinks: false
       containers:
-      - name: dind
-        image: {{ $comp.dindImage | default "docker:19.03-dind" }}
-{{ include "gitpod.container.imagePullPolicy" $this | indent 8 }}
-        securityContext:
-          privileged: true
-          runAsUser: 0
-        args: [ "dockerd", "--userns-remap=default", "-H tcp://127.0.0.1:2375" {{- if $comp.dindMtu -}}, "--mtu={{ $comp.dindMtu}}"{{- end -}} ]
-        volumeMounts:
-        - mountPath: /var/lib/docker
-          name: dind-storage
-{{- range $idx, $sec := $comp.registryCerts }}
-        - mountPath: /etc/docker/certs.d/{{- if eq $sec.name "builtin" -}}{{ template "gitpod.builtinRegistry.name" $this.root }}{{ else }}{{ $sec.name }}{{ end }}/tls.cert
-          name: docker-tls-certs-{{ $idx }}
-          subPath: tls.crt
-        - mountPath: /etc/docker/certs.d/{{- if eq $sec.name "builtin" -}}{{ template "gitpod.builtinRegistry.name" $this.root }}{{ else }}{{ $sec.name }}{{ end }}/tls.crt
-          name: docker-tls-certs-{{ $idx }}
-          subPath: tls.crt
-        - mountPath: /etc/docker/certs.d/{{- if eq $sec.name "builtin" -}}{{ template "gitpod.builtinRegistry.name" $this.root }}{{ else }}{{ $sec.name }}{{ end }}/tls.key
-          name: docker-tls-certs-{{ $idx }}
-          subPath: tls.key
-        - mountPath: /etc/docker/certs.d/{{- if eq $sec.name "builtin" -}}{{ template "gitpod.builtinRegistry.name" $this.root }}{{ else }}{{ $sec.name }}{{ end }}/ca.crt
-          name: docker-tls-certs-{{ $idx }}
-          subPath: ca.crt
-{{- end }}
-{{- if $comp.dindResources }}
-        resources:
-{{ toYaml $comp.dindResources | indent 10 }}
-{{- end }}
+{{ include "gitpod.kube-rbac-proxy" $this | indent 6 }}
+      - name: image-builder-mk3
 {{ include "gitpod.container.defaultEnv" $this | indent 8 }}
 {{ include "gitpod.container.tracingEnv" $this | indent 8 }}
-{{ include "gitpod.kube-rbac-proxy" $this | indent 6 }}
-      - name: service
         image: {{ template "gitpod.comp.imageFull" $this }}
         args:
         - "run"
@@ -109,8 +80,14 @@ spec:
         - mountPath: /config/image-builder.json
           subPath: "image-builder.json"
           name: configuration
-{{- if $comp.registry }}
-{{- if $comp.registry.secretName }}
+        - mountPath: /config/authkey
+          subPath: "keyfile"
+          name: authkey
+        - mountPath: /wsman-certs
+          name: wsman-tls-certs
+          readOnly: true
+{{- if (default $comp $compImgbldr).registry }}
+{{- if (default $comp $compImgbldr).registry.secretName }}
         - mountPath: /config/pull-secret.json
           subPath: .dockerconfigjson
           name: pull-secret
@@ -126,9 +103,5 @@ spec:
           privileged: false
 {{ include "gitpod.container.defaultEnv" $this | indent 8 }}
 {{ include "gitpod.container.tracingEnv" $this | indent 8 }}
-        - name: DOCKER_HOST
-          value: "tcp://localhost:2375"
-        - name: GRPC_GO_RETRY
-          value: "on"
 {{ toYaml .Values.defaults | indent 6 }}
 {{ end }}

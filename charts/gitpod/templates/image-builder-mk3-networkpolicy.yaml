@@ -5,17 +5,17 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: image-builder
+  name: image-builder-mk3
   labels:
     app: {{ template "gitpod.fullname" . }}
-    component: image-builder
+    component: image-builder-mk3
     kind: networkpolicy
     stage: {{ .Values.installation.stage }}
 spec:
   podSelector:
     matchLabels:
       app: {{ template "gitpod.fullname" . }}
-      component: image-builder
+      component: image-builder-mk3
   policyTypes:
   - Ingress
   - Egress

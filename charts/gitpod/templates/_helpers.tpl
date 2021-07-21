@@ -36,7 +36,7 @@ Create chart name and version as used by the chart label.
 {{- $ := .root -}}
 {{- $gp := .gp -}}
 {{- $comp := .comp -}}
-imagePullPolicy: {{ $comp.imagePullPolicy | default $gp.imagePullPolicy | default "IfNotPresent" }}
+imagePullPolicy: {{ $comp.imagePullPolicy | default "IfNotPresent" }}
 {{- end -}}
 
 {{- define "gitpod.container.resources" -}}

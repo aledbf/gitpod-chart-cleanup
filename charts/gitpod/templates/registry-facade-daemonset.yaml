@@ -43,7 +43,7 @@ spec:
         - name: update-containerd-certificates
           command: ["nsenter"]
           args: ["--mount=/proc/1/ns/mnt", "--", "sh", "-c", "$(SETUP_SCRIPT)"]
-          image: alpine:3.14
+          image: docker.io/alpine:3.14
           env:
           - name: GITPOD_CA_CERT
             valueFrom:

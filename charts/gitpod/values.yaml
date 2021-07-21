@@ -202,30 +202,13 @@ components:
         servicePort: 3001
     serviceType: ClusterIP
 
-  imageBuilder:
-    name: "image-builder"
+  imageBuilderMk3:
+    name: "image-builder-mk3"
     dependsOn:
-    - "image-builder-configmap.yaml"
-    hostDindData: /var/gitpod/docker
-    registry:
-      name: builtin
-      secretName: builtin-registry-auth
-      path: ""
-      baseImageName: ""
-      workspaceImageName: ""
-      # By default, the builtin registry is accessed through the proxy.
-      # If bypassProxy is true, the builtin registry is accessed via <registry-name>.<namespace>.svc.cluster.local directly.
-      bypassProxy: false
-    registryCerts:
-    - name: builtin
-      secret: builtin-registry-certs
-    dindImage: docker:19.03-dind
-    dindMtu: ""
-    dindResources:
-      requests:
-        cpu: 100m
-        memory: 128Mi
-    alpineImage: alpine:3.14
+    - "image-builder-mk3-configmap.yaml"
+    alpineImage: docker.io/alpine:3.14
+    builderImage:
+      imageName: "image-builder-mk3/bob"
     ports:
       rpc:
         expose: true

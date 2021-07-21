@@ -106,5 +106,8 @@ spec:
           privileged: false
 {{ include "gitpod.container.defaultEnv" $this | indent 8 }}
 {{ include "gitpod.container.tracingEnv" $this | indent 8 }}
+      volumes:
+{{- include "gitpod.ca-certificates.volume" $this | indent 6 }}
+
 {{ toYaml .Values.defaults | indent 6 }}
 {{ end }}

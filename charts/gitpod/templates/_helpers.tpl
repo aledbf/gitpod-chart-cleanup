@@ -351,13 +351,12 @@ storage:
 {{- define "gitpod.ca-certificates.container" -}}
 - name: update-ca-certificates
   # alpine throws a warning
-  image: ubuntu:20.04
+  image: ghcr.io/aledbf/gitpod-ca-updater:latest
   command:
-  - sh
+  - bash
   - -c
   - |
     set -e
-    apt update && apt install -y ca-certificates
     update-ca-certificates -f
     cp /etc/ssl/certs/* /ssl-certs
     echo "OK"

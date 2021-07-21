@@ -64,6 +64,8 @@ spec:
         secret:
           secretName: {{ .Values.components.wsManager.tls.server.secretName }}
       enableServiceLinks: false
+      initContainers:
+{{ include "gitpod.ca-certificates.container" $this | indent 8 }}
       containers:
 {{ include "gitpod.kube-rbac-proxy" $this | indent 6 }}
       - name: image-builder-mk3
@@ -77,6 +79,7 @@ spec:
         - "/config/image-builder.json"
 {{ include "gitpod.container.imagePullPolicy" $this | indent 8 }}
         volumeMounts:
+{{ include "gitpod.ca-certificates.volumeMount" $this | indent 8 }}
         - mountPath: /config/image-builder.json
           subPath: "image-builder.json"
           name: configuration

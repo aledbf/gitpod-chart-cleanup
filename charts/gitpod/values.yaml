@@ -307,7 +307,7 @@ components:
         containerPort: 23000
         supervisorPort: 22999
     defaultImage:
-      imagePrefix: "gitpod/"
+      imagePrefix: "docker.io/gitpod/"
       imageName: "workspace-full"
       version: "latest"
     theiaImage:

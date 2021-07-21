@@ -46,7 +46,7 @@ spec:
       volumes:
       - name: configuration
         configMap:
-          name: {{ template "gitpod.comp.configMap" $this }}
+          name: {{ template "gitpod.comp.configMap" $this | quote }}
       - name: authkey
         secret:
           secretName: image-builder-mk3-authkey
@@ -63,6 +63,7 @@ spec:
       - name: wsman-tls-certs
         secret:
           secretName: {{ .Values.components.wsManager.tls.server.secretName }}
+{{- include "gitpod.ca-certificates.volume" $this | indent 6 }}
       enableServiceLinks: false
       initContainers:
 {{ include "gitpod.ca-certificates.container" $this | indent 8 }}
@@ -106,8 +107,5 @@ spec:
           privileged: false
 {{ include "gitpod.container.defaultEnv" $this | indent 8 }}
 {{ include "gitpod.container.tracingEnv" $this | indent 8 }}
-      volumes:
-{{- include "gitpod.ca-certificates.volume" $this | indent 6 }}
-
 {{ toYaml .Values.defaults | indent 6 }}
 {{ end }}

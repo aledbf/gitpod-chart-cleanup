@@ -40,28 +40,28 @@ metadata:
 data:
 {{- if $comp.templates }}
   "default.yaml": |
-{{ dict | merge $comp.templates.default (include "coreWorkspaceConfig" $this | fromYaml) | toJson | indent 4 }}
+{{ dict | merge $comp.templates.default (include "coreWorkspaceConfig" $this | fromYaml) | toPrettyJson | indent 4 }}
 {{ if (or $comp.templates.prebuild $comp.affinity) }}
   "prebuild.yaml": |
-{{ dict | merge ($comp.templates.prebuild | default dict) (include "coreWorkspaceAffinity" (dict "comp" $comp "tpe" "prebuild") | fromYaml) | toJson | indent 4 }}
+{{ dict | merge ($comp.templates.prebuild | default dict) (include "coreWorkspaceAffinity" (dict "comp" $comp "tpe" "prebuild") | fromYaml) | toPrettyJson | indent 4 }}
 {{- end }}
 {{ if (or $comp.templates.probe $comp.affinity) }}
   "probe.yaml": |
-{{ dict | merge ($comp.templates.probe | default dict) (include "coreWorkspaceAffinity" (dict "comp" $comp "tpe" "probe") | fromYaml) | toJson | indent 4 }}
+{{ dict | merge ($comp.templates.probe | default dict) (include "coreWorkspaceAffinity" (dict "comp" $comp "tpe" "probe") | fromYaml) | toPrettyJson | indent 4 }}
 {{- end }}
 {{ if (or $comp.templates.regular $comp.affinity) }}
   "ghost.yaml": |
-{{ dict | merge ($comp.templates.ghost | default dict) (include "coreWorkspaceAffinity" (dict "comp" $comp "tpe" "ghost") | fromYaml) | toJson | indent 4 }}
+{{ dict | merge ($comp.templates.ghost | default dict) (include "coreWorkspaceAffinity" (dict "comp" $comp "tpe" "ghost") | fromYaml) | toPrettyJson | indent 4 }}
 {{- end }}
 {{ if (or $comp.templates.imagebuild $comp.affinity) }}
   "imagebuild.yaml": |
-{{ dict | merge ($comp.templates.imagebuild | default dict) (include "coreWorkspaceAffinity" (dict "comp" $comp "tpe" "imagebuild") | fromYaml) | toJson | indent 4 }}
+{{ dict | merge ($comp.templates.imagebuild | default dict) (include "coreWorkspaceAffinity" (dict "comp" $comp "tpe" "imagebuild") | fromYaml) | toPrettyJson | indent 4 }}
 {{- end }}
 {{ if (or $comp.templates.regular $comp.affinity) }}
   "regular.yaml": |
-{{ dict | merge ($comp.templates.regular | default dict) (include "coreWorkspaceAffinity" (dict "comp" $comp "tpe" "regular") | fromYaml) | toJson | indent 4 }}
+{{ dict | merge ($comp.templates.regular | default dict) (include "coreWorkspaceAffinity" (dict "comp" $comp "tpe" "regular") | fromYaml) | toPrettyJson | indent 4 }}
 {{- end }}
 {{- else }}
   "default.yaml": |
-{{ dict | merge $comp.template (include "coreWorkspaceConfig" $this | fromYaml) | toJson | indent 4 }}
+{{ dict | merge $comp.template (include "coreWorkspaceConfig" $this | fromYaml) | toPrettyJson | indent 4 }}
 {{- end }}

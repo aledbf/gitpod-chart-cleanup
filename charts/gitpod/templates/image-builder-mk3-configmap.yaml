@@ -63,6 +63,7 @@ data:
   buildkitd.toml: |
     debug = true
     [registry."registry.{{ .Release.Namespace }}.svc.cluster.local"]
+      insecure = true
       ca=["/usr/local/share/ca-certificates/gitpod-ca.crt"]
 
 {{- end -}}

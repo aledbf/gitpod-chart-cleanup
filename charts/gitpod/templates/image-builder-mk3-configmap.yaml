@@ -61,6 +61,7 @@ data:
         }
     }
   buildkitd.toml: |
+    debug = true
     [registry."registry.{{ .Release.Namespace }}.svc.cluster.local"]
       ca=["/usr/local/share/ca-certificates/gitpod-ca.crt"]
 

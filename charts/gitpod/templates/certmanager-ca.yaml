@@ -15,6 +15,8 @@ metadata:
   name: {{ $certManager.ca.secretName }}
   namespace: {{ .Release.Namespace }}
 spec:
+  # ~6 months
+  duration: 4380h
   isCA: true
   commonName: {{ $certManager.ca.issuerName }}
   secretName: {{ $certManager.ca.secretName }}

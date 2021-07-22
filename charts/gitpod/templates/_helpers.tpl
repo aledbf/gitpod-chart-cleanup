@@ -348,6 +348,7 @@ storage:
 - name: update-ca-certificates
   # alpine throws a warning
   image: ghcr.io/aledbf/gitpod-ca-updater:latest
+  imagePullPolicy: IfNotPresent
   command:
   - bash
   - -c

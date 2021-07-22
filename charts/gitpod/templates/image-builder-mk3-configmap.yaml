@@ -60,4 +60,8 @@ data:
             "address": ":8080"
         }
     }
+  buildkitd.toml: |
+    [registry."registry.svc.{{ .Release.Namespace }}.cluster.local"]
+      ca=["/usr/local/share/ca-certificates/gitpod-ca.crt"]
+
 {{- end -}}

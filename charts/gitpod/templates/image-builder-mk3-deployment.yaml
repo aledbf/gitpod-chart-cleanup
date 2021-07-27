@@ -50,12 +50,12 @@ spec:
       - name: authkey
         secret:
           secretName: image-builder-mk3-authkey
-      {{- if (default $compImgbldr.registry).secretName }}
+      {{- if (default $comp.registry).secretName }}
       - name: pull-secret
         secret:
-          secretName: {{ (default $compImgbldr.registry).secretName }}
+          secretName: {{ (default $comp.registry).secretName }}
       {{- end }}
-{{- range $idx, $sec := (default $comp.registryCerts $compImgbldr.registryCerts) }}
+{{- range $idx, $sec := (default $comp.registryCerts $comp.registryCerts) }}
       - name: docker-tls-certs-{{ $idx }}
         secret:
           secretName: {{ $sec.secret }}
@@ -90,8 +90,8 @@ spec:
         - mountPath: /wsman-certs
           name: wsman-tls-certs
           readOnly: true
-{{- if (default $comp $compImgbldr).registry }}
-{{- if (default $comp $compImgbldr).registry.secretName }}
+{{- if (default $comp $comp).registry }}
+{{- if (default $comp $comp).registry.secretName }}
         - mountPath: /config/pull-secret.json
           subPath: .dockerconfigjson
           name: pull-secret

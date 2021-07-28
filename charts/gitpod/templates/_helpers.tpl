@@ -309,7 +309,6 @@ storage:
     secure: {{ $remoteStorageMinio.secure | default ($minio.enabled | default false) }}
     region: {{ $remoteStorageMinio.region | default "local" }}
     parallelUpload: {{ $remoteStorageMinio.parallelUpload | default "" }}
-    maxBackupSize: {{ $remoteStorageMinio.maxBackupSize | default "" }}
 {{- else }}
 {{ toYaml .remoteStorage | indent 2 }}
 {{- end -}}

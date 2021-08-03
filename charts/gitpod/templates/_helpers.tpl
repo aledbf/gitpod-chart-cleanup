@@ -375,5 +375,5 @@ storage:
   emptyDir: {}
 - name: gitpod-ca-certificate
   secret:
-    secretName: gitpod-registry
+    secretName: gitpod-registry-cert
 {{- end -}}

@@ -52,6 +52,10 @@ spec:
         matchLabels:
           app: {{ template "gitpod.fullname" . }}
           component: postman
+    - podSelector:
+        matchLabels:
+          app: {{ template "gitpod.fullname" . }}
+          component: database-sessions
     {{ if eq .Values.installation.stage "devstaging" -}}
     - podSelector:
         matchLabels:

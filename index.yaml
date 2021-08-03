@@ -3,6 +3,34 @@ entries:
   gitpod:
   - apiVersion: v2
     appVersion: 0.10.0
+    created: "2021-08-03T12:47:43.925092404Z"
+    dependencies:
+    - condition: docker-registry.enabled
+      name: docker-registry
+      repository: https://helm.twun.io
+      version: 1.11.0
+    - condition: minio.enabled
+      name: minio
+      repository: https://helm.min.io/
+      version: 8.0.10
+    - condition: mysql.enabled
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.6.2
+    - condition: rabbitmq.enabled
+      name: rabbitmq
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.16.0
+    description: The core chart for Gitpod
+    digest: f3f008ff05577872ff4d4f92a1ee3613a514eb47b0a3d9e5b99d7a967ef3e61c
+    icon: https://www.gitpod.io/favicon192.png
+    kubeVersion: '>=1.19.0-0'
+    name: gitpod
+    urls:
+    - https://github.com/aledbf/gitpod-chart-cleanup/releases/download/gitpod-1.2.22/gitpod-1.2.22.tgz
+    version: 1.2.22
+  - apiVersion: v2
+    appVersion: 0.10.0
     created: "2021-08-02T18:49:53.797015153Z"
     dependencies:
     - condition: docker-registry.enabled
@@ -1734,4 +1762,4 @@ entries:
     urls:
     - https://github.com/aledbf/gitpod-chart-cleanup/releases/download/gitpod-1.0.3%22/gitpod-1.0.3.tgz
     version: 1.0.3
-generated: "2021-08-02T18:49:53.797531657Z"
+generated: "2021-08-03T12:47:43.925960118Z"

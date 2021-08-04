@@ -9,7 +9,11 @@
 {{- $comp := .comp -}}
 {{- $compImgbldr := .compImgbldr -}}
 {{- $ := .root -}}
+{{- if eq (default $comp.registry $compImgbldr.registry).name "builtin" -}}
 {{ template "gitpod.builtinRegistry.name" $ }}
+{{- else -}}
+{{ (default $comp.registry $compImgbldr.registry).name }}
+{{- end -}}
 {{- end -}}
 
 {{- if not $comp.disabled -}}

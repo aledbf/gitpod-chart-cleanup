@@ -202,6 +202,10 @@ components:
         servicePort: 3001
     serviceType: ClusterIP
 
+  imageBuilder:
+    registry:
+      name: "builtin"
+
   imageBuilderMk3:
     name: "image-builder-mk3"
     dependsOn:

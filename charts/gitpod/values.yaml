@@ -247,19 +247,6 @@ components:
       feature: registry
     serviceType: "ClusterIP"
 
-  # enabled cronjob to restart the proxy deployment
-  restarter:
-    enabled: false
-    schedule: '0 0 * * 0'
-    image: bitnami/kubectl:latest
-    targets:
-    - name: proxy
-      kind: deployment
-    - name: registry-facade
-      kind: daemonset
-    - name: ws-proxy
-      kind: deployment
-
   server:
     name: "server"
     dependsOn:

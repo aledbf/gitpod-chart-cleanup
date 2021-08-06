@@ -39,6 +39,7 @@ spec:
         gitpod.io/nodeService: content-service
     spec:
 {{ include "gitpod.pod.affinity" $this | indent 6 }}
+      priorityClassName: system-node-critical
       serviceAccountName: content-service
       enableServiceLinks: false
       containers:

@@ -41,6 +41,7 @@ spec:
         cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
     spec:
 {{ include "gitpod.workspaceAffinity" $this | indent 6 }}
+      priorityClassName: system-node-critical
       serviceAccountName: blobserve
       enableServiceLinks: false
       containers:

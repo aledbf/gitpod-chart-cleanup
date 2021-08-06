@@ -42,6 +42,7 @@ spec:
 {{ include "gitpod.pod.dependsOn" $this | indent 8 }}
     spec:
 {{ include "gitpod.workspaceAffinity" $this | indent 6 }}
+      priorityClassName: system-node-critical
       serviceAccountName: image-builder-mk3
       volumes:
       - name: configuration

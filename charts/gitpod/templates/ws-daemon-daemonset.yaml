@@ -40,6 +40,16 @@ spec:
 {{ include "gitpod.workspaceAffinity" $this | indent 6 }}
       priorityClassName: system-node-critical
       serviceAccountName: ws-daemon
+      tolerations:
+      - key: node.kubernetes.io/disk-pressure
+        operator: "Exists"
+        effect: "NoExecute"
+      - key: node.kubernetes.io/memory-pressure
+        operator: "Exists"
+        effect: "NoExecute"
+      - key: node.kubernetes.io/out-of-disk
+        operator: "Exists"
+        effect: "NoExecute"
       hostAliases:
         - ip: "127.0.0.1"
           hostnames:

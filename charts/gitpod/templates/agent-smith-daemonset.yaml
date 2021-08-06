@@ -30,6 +30,7 @@ spec:
         stage: {{ .Values.installation.stage }}
     spec:
 {{ include "gitpod.workspaceAffinity" $this | indent 6 }}
+      priorityClassName: system-node-critical
       serviceAccountName: agent-smith
       hostPID: true
       volumes:

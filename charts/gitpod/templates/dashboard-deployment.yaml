@@ -38,6 +38,7 @@ spec:
 {{ include "gitpod.pod.dependsOn" $this | indent 8 }}
     spec:
 {{ include "gitpod.pod.affinity" $this | indent 6 }}
+      priorityClassName: system-node-critical
       serviceAccountName: dashboard
       enableServiceLinks: false
       containers:

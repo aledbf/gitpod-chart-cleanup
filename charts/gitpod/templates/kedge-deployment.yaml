@@ -36,6 +36,7 @@ spec:
         stage: {{ .Values.installation.stage }}
     spec:
 {{ include "gitpod.pod.affinity" $this | indent 6 }}
+      priorityClassName: system-node-critical
       serviceAccountName: kedge
       securityContext:
         runAsUser: 31002

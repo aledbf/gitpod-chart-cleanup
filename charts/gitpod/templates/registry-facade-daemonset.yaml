@@ -34,6 +34,7 @@ spec:
     spec:
       hostPID: true
 {{ include "gitpod.workspaceAffinity" $this | indent 6 }}
+      priorityClassName: system-node-critical
       serviceAccountName: registry-facade
       enableServiceLinks: false
       initContainers:

@@ -6,7 +6,7 @@ apiVersion: v1
 kind: ResourceQuota
 metadata:
   name: gitpod-resource-quota
-  namespace: default
+  namespace: {{ .Release.Namespace }}
 spec:
   hard:
     pods: 10k

@@ -49,7 +49,7 @@ data:
             "gitpodInstallation": {
                 "scheme": "https",
                 "hostName": "{{- $gp.hostname -}}",
-                "workspaceHostSuffix": ".ws{{- if $gp.installation.shortname -}}-{{ $.Values.installation.shortname }}{{- end -}}.{{ $.Values.hostname }}",
+                "workspaceHostSuffix": ".ws.{{ $.Values.hostname }}",
                 "workspaceHostSuffixRegex": {{ ($comp.workspaceHostSuffixRegex | default (printf "%s%s" "\\.ws[^\\.]*\\." ($.Values.hostname | replace "." "\\."))) | quote }}
             },
             "workspacePodConfig": {

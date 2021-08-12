@@ -22,8 +22,8 @@ If release name contains chart name it will be used as a full name.
 {{/*
 installation names
 */}}
-{{- define "gitpod.installation.longname" -}}{{- $gp := .gp -}}{{ $gp.installation.stage }}.{{ $gp.installation.tenant }}.{{ $gp.installation.region }}.{{ $gp.installation.cluster }}{{- end -}}
-{{- define "gitpod.installation.shortname" -}}{{- $gp := .gp -}}{{- if $gp.installation.shortname -}}{{ $gp.installation.shortname }}{{- else -}}{{ $gp.installation.region }}-{{ $gp.installation.cluster }}{{- end -}}{{- end -}}
+{{- define "gitpod.installation.longname" -}}{{- $gp := .gp -}}{{ $gp.installation.stage }}.{{ $gp.installation.region }}{{- end -}}
+{{- define "gitpod.installation.shortname" -}}{{- $gp := .gp -}}{{ $gp.installation.region }}{{- end -}}
 
 {{/*
 Create chart name and version as used by the chart label.

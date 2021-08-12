@@ -65,8 +65,8 @@ data:
             "initProbe": {
                 "timeout": "1s"
             },
-            "urlTemplate":     "https://{{"{{ .Prefix }}"}}.ws{{- if $.Values.installation.shortname -}}-{{ $.Values.installation.shortname }}{{- end -}}.{{ $.Values.hostname }}",
-            "portUrlTemplate": "https://{{"{{ .WorkspacePort }}"}}-{{"{{ .Prefix }}"}}.ws{{- if $.Values.installation.shortname -}}-{{ $.Values.installation.shortname }}{{- end -}}.{{ $.Values.hostname }}",
+            "urlTemplate":     "https://{{"{{ .Prefix }}"}}.ws.{{ $.Values.hostname }}",
+            "portUrlTemplate": "https://{{"{{ .WorkspacePort }}"}}-{{"{{ .Prefix }}"}}.ws.{{ $.Values.hostname }}",
             "workspaceHostPath": "{{ .Values.components.wsDaemon.hostWorkspaceArea }}",
             "podTemplate": {
                 {{- if $wscomp.templates }}

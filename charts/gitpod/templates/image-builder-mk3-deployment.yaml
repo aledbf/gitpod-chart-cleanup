@@ -51,10 +51,10 @@ spec:
       - name: authkey
         secret:
           secretName: image-builder-mk3-authkey
-      {{- if (default $comp.registry).secretName }}
+      {{- if $comp.registry.secretName }}
       - name: pull-secret
         secret:
-          secretName: {{ (default $comp.registry).secretName }}
+          secretName: {{ $comp.registry.secretName }}
       {{- end }}
 {{- range $idx, $sec := (default $comp.registryCerts $comp.registryCerts) }}
       - name: docker-tls-certs-{{ $idx }}

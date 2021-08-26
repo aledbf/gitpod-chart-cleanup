@@ -334,6 +334,8 @@ components:
     loadBalancerIP: null
     serviceType: "LoadBalancer"
     serviceExternalTrafficPolicy: null
+    certManager:
+      enabled: true
 
   wsManager:
     name: "ws-manager"

@@ -30,7 +30,7 @@ data:
   image-builder.json: |-
     {
         "orchestrator": {
-            {{- if (default $comp.registry $compImgbldr.registry).secretName -}}"authFile": "/config/pull-secret.json",{{- end -}}
+            {{- if $comp.registry.secretName -}}"authFile": "/config/pull-secret.json",{{- end -}}
             "gitpodLayerLoc": "/app/workspace-image-layer.tar.gz",
             "baseImageRepository": "{{ or (default $comp.registry $compImgbldr.registry).baseImageName (print (include "registry-name" $this) "/base-images") }}",
             "workspaceImageRepository": "{{ or (default $comp.registry $compImgbldr.registry).workspaceImageName (print (include "registry-name" $this) "/workspace-images") }}",
